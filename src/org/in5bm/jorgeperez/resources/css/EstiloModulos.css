@@ -1,0 +1,33 @@
+/* 
+    Created on : 7/04/2022, 10:00:06
+    Author     : Jorge Luis Pérez
+*/
+
+#panel-navegacion {
+    -fx-background-color: #0A0B37;
+}
+
+#pane-entidad {
+    -fx-background-color: #C8C8D2;
+    -fx-background-radius: 0 0 50 50;
+}
+
+.botones-crud {
+    -fx-background-color: #0A0B37;
+    -fx-text-fill: #FFFFFF;
+}
+
+.botones-crud:hover {
+    -fx-background-color: #E7E7E7;
+    -fx-text-fill: #000000;
+}
+/*
+#vbox-crud {
+    -fx-background-color: #C8C8D2;
+    -fx-background-radius: 25 25 25 25;
+}
+*/
+
+#pane-header {
+    -fx-background-color: #CDD0D9;
+}

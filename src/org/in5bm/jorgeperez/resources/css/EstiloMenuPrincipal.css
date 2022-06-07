@@ -1,0 +1,10 @@
+/* 
+    Created on : 5/04/2022, 11:56:06
+    Author     : Jorge Luis Pérez Canto
+*/
+
+#menu-bar {
+    -fx-background-radius: 10 10 10 10;
+    /* -fx-background-color: #E37013; */
+    -fx-background-color: linear-gradient(to bottom, #F86E00, #E8A841);
+}
