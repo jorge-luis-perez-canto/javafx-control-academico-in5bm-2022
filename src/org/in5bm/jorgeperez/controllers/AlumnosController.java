@@ -116,6 +116,7 @@ public class AlumnosController implements Initializable {
         cargarDatos();
     }
 
+    
     public ObservableList getAlumnos() {
         ArrayList<Alumnos> arrayListAlumnos = new ArrayList<>();
         PreparedStatement pstmt = null;

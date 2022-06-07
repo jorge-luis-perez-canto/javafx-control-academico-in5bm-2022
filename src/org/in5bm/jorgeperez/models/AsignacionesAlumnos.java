@@ -30,13 +30,14 @@ public class AsignacionesAlumnos {
         this.cursoId = new SimpleIntegerProperty();
         this.fechaAsignacion = new SimpleObjectProperty<>();
     }
-    
+
     public AsignacionesAlumnos(int id, String alumnoId, int cursoId, LocalDate fechaAsignacion) {
         this.id = new SimpleIntegerProperty(id);
         this.alumnoId = new SimpleStringProperty(alumnoId);
         this.cursoId = new SimpleIntegerProperty(cursoId);
         this.fechaAsignacion = new SimpleObjectProperty<>(fechaAsignacion);
     }
+   
 
     // Getter's and Setter's
     
@@ -91,5 +92,12 @@ public class AsignacionesAlumnos {
     public void setFechaAsignacion(LocalDate fechaAsignacion) {
         this.fechaAsignacion.set(fechaAsignacion);
     }
+
+    @Override
+    public String toString() {
+        return id + " | " + fechaAsignacion;
+    }
     
+    
+
 }

@@ -95,6 +95,6 @@ public class Alumnos {
 
     @Override
     public String toString() {
-        return "Alumnos{" + "carne=" + carne + ", nombre1=" + nombre1 + ", nombre2=" + nombre2 + ", nombre3=" + nombre3 + ", apellido1=" + apellido1 + ", apellido2=" + apellido2 + '}';
+        return carne + " | " + nombre1  + " " + apellido1;
     }
 }

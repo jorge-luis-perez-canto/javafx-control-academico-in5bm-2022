@@ -9,12 +9,14 @@ import javafx.fxml.FXML;
 
 public class MenuPrincipalController implements Initializable {
 
-    private Principal escenarioPrincipal;
+    
             
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
     }
+    
+    private Principal escenarioPrincipal;
     
     public Principal getEscenarioPrincipal() {
         return escenarioPrincipal;

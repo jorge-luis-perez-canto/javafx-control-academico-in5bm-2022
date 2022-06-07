@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.in5bm.jorgeperez.controllers.AlumnosController;
+import org.in5bm.jorgeperez.controllers.AsignacionAlumnosController;
 import org.in5bm.jorgeperez.controllers.MenuPrincipalController;
 
 /**
@@ -35,7 +36,18 @@ public class Principal extends Application {
         this.escenarioPrincipal.getIcons().add(new Image(PAQUETE_IMAGE + "colegio.png"));
         this.escenarioPrincipal.setResizable(false);
         this.escenarioPrincipal.centerOnScreen();
-        mostrarEscenaPrincipal();
+        //mostrarEscenaPrincipal();
+        mostrarEscenaAsigacion();
+    }
+    
+    public void mostrarEscenaAsigacion() {
+        try {
+            AsignacionAlumnosController asignacionController = (AsignacionAlumnosController) cambiarEscena("AsignacionesAlumnosView.fxml", 1152, 648);
+            asignacionController.setEscenarioPrincipal(this);
+        } catch (Exception ex) {
+            System.err.println("\nSe ha un producido un error al mostrar la vista del Menú Principal");
+            ex.printStackTrace();
+        }
     }
     
     public void mostrarEscenaPrincipal() {
@@ -46,7 +58,7 @@ public class Principal extends Application {
             System.err.println("\nSe ha un producido un error al mostrar la vista del Menú Principal");
             ex.printStackTrace();
         }
-    }
+    }    
 
     public void mostrarEscenaAlumnos() {
         try {
