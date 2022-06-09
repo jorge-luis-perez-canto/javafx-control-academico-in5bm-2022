@@ -1,12 +1,12 @@
 package org.in5bm.jorgeperez.models;
 
-import java.sql.Time;
+import java.time.LocalTime;
 
 public class Horarios {
 
     private int id;
-    private Time horarioInicio;
-    private Time horarioFinal;
+    private LocalTime horarioInicio;
+    private LocalTime horarioFinal;
     private boolean lunes;
     private boolean martes;
     private boolean miercoles;
@@ -17,13 +17,7 @@ public class Horarios {
 
     }
 
-    public Horarios(int id, Time horarioInicio, Time horarioFinal) {
-        this.id = id;
-        this.horarioInicio = horarioInicio;
-        this.horarioFinal = horarioFinal;
-    }
-
-    public Horarios(int id, Time horarioInicio, Time horarioFinal, boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes) {
+    public Horarios(int id, LocalTime horarioInicio, LocalTime horarioFinal, boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes) {
         this.id = id;
         this.horarioInicio = horarioInicio;
         this.horarioFinal = horarioFinal;
@@ -32,10 +26,6 @@ public class Horarios {
         this.miercoles = miercoles;
         this.jueves = jueves;
         this.viernes = viernes;
-    }
-
-    public Horarios(int id) {
-        this.id = id;
     }
 
     public int getId() {
@@ -46,23 +36,23 @@ public class Horarios {
         this.id = id;
     }
 
-    public Time getHorarioInicio() {
+    public LocalTime getHorarioInicio() {
         return horarioInicio;
     }
 
-    public void setHorarioInicio(Time horarioInicio) {
+    public void setHorarioInicio(LocalTime horarioInicio) {
         this.horarioInicio = horarioInicio;
     }
 
-    public Time getHorarioFinal() {
+    public LocalTime getHorarioFinal() {
         return horarioFinal;
     }
 
-    public void setHorarioFinal(Time horarioFinal) {
+    public void setHorarioFinal(LocalTime horarioFinal) {
         this.horarioFinal = horarioFinal;
     }
 
-    public boolean getLunes() {
+    public boolean isLunes() {
         return lunes;
     }
 
@@ -70,7 +60,7 @@ public class Horarios {
         this.lunes = lunes;
     }
 
-    public boolean getMartes() {
+    public boolean isMartes() {
         return martes;
     }
 
@@ -78,7 +68,7 @@ public class Horarios {
         this.martes = martes;
     }
 
-    public boolean getMiercoles() {
+    public boolean isMiercoles() {
         return miercoles;
     }
 
@@ -86,7 +76,7 @@ public class Horarios {
         this.miercoles = miercoles;
     }
 
-    public boolean getJueves() {
+    public boolean isJueves() {
         return jueves;
     }
 
@@ -94,7 +84,7 @@ public class Horarios {
         this.jueves = jueves;
     }
 
-    public boolean getViernes() {
+    public boolean isViernes() {
         return viernes;
     }
 
@@ -104,10 +94,8 @@ public class Horarios {
 
     @Override
     public String toString() {
-        return "Horarios{" + "id=" + id + ", horarioInicio=" + horarioInicio + ", horarioFinal=" + horarioFinal
-                + ", lunes=" + lunes
-                + ", martes=" + martes
-                + ", miercoles=" + miercoles
-                + ", jueves=" + jueves + ", viernes=" + viernes + '}';
+        return id + " | " + horarioInicio + " - " + horarioFinal;
     }
+    
+    
 }

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -139,12 +138,40 @@ public class AsignacionAlumnosController implements Initializable {
         dpkFechaAsignacion.setDisable(false);
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void limpiarCampos() {
         txtId.clear();
+        
         cmbCurso.valueProperty().set(null);
         cmbAlumno.valueProperty().set(null);
         dpkFechaAsignacion.getEditor().clear();
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     public ObservableList getAlumnos() {
         ArrayList<Alumnos> arrayListAlumnos = new ArrayList<>();
@@ -295,7 +322,7 @@ public class AsignacionAlumnosController implements Initializable {
                 curso.setCupoMinimo(rs.getInt("cupo_minimo"));
                 curso.setCarreraTecnicaId(rs.getString("carrera_tecnica_id"));
                 curso.setHorarioId(rs.getInt("horario_id"));
-                curso.setInstructorId(rs.getInt("instructor_id"));
+                curso.setIntructorId(rs.getInt("instructor_id"));
                 curso.setSalonId(rs.getString("salon_id"));
 
                 System.out.println(curso.toString());
@@ -352,7 +379,7 @@ public class AsignacionAlumnosController implements Initializable {
                 curso.setCupoMinimo(rs.getInt("cupo_minimo"));
                 curso.setCarreraTecnicaId(rs.getString("carrera_tecnica_id"));
                 curso.setHorarioId(rs.getInt("horario_id"));
-                curso.setInstructorId(rs.getInt("instructor_id"));
+                curso.setIntructorId(rs.getInt("instructor_id"));
                 curso.setSalonId(rs.getString("salon_id"));
 
                 System.out.println(curso.toString());
@@ -435,6 +462,7 @@ public class AsignacionAlumnosController implements Initializable {
     @FXML
     public void seleccionarElemento() {
         if (existeElementoSeleccionado()) {
+            
             txtId.setText(
                     String.valueOf(
                             ((AsignacionesAlumnos) tblAsignacionesAlumnos
@@ -454,6 +482,11 @@ public class AsignacionAlumnosController implements Initializable {
                             ((AsignacionesAlumnos) tblAsignacionesAlumnos
                                     .getSelectionModel().getSelectedItem()).getAlumnoId()
                     )
+            );
+            
+            dpkFechaAsignacion.setValue(
+                    ((AsignacionesAlumnos) tblAsignacionesAlumnos.getSelectionModel().getSelectedItem())
+                            .getFechaAsignacion().toLocalDate()
             );
 
         }
