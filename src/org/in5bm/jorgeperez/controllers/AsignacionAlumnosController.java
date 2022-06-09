@@ -4,6 +4,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -35,6 +36,7 @@ import org.in5bm.jorgeperez.models.Cursos;
 import org.in5bm.jorgeperez.system.Principal;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -66,21 +68,16 @@ public class AsignacionAlumnosController implements Initializable {
     @FXML
     private ImageView imgRegresar;
     @FXML
-    private TableView<?> tblAsignacionAlumnos;
+    private TableView<AsignacionesAlumnos> tblAsignacionesAlumnos; // New
     @FXML
     private TableColumn<AsignacionesAlumnos, Integer> colId;
     @FXML
     private TableColumn<AsignacionesAlumnos, String> colCarne;
     @FXML
-    private TableColumn<Alumnos, String> colNombreAlumno;
-    @FXML
     private TableColumn<AsignacionesAlumnos, Integer> colCursoId;
     @FXML
-    private TableColumn<Cursos, String> colNombreCurso;
-    
-    @FXML
-    private TableColumn<AsignacionesAlumnos, LocalDate> colFechaAsignacion;    
-    
+    private TableColumn<AsignacionesAlumnos, LocalDateTime> colFechaAsignacion;
+
     @FXML
     private ComboBox<Alumnos> cmbAlumno;
     @FXML
@@ -90,7 +87,6 @@ public class AsignacionAlumnosController implements Initializable {
     @FXML
     private DatePicker dpkFechaAsignacion;
 
-
     public Principal getEscenarioPrincipal() {
         return escenarioPrincipal;
     }
@@ -99,9 +95,9 @@ public class AsignacionAlumnosController implements Initializable {
         this.escenarioPrincipal = escenarioPrincipal;
     }
 
-
     @FXML
     private void clicRegresar(MouseEvent event) {
+        escenarioPrincipal.mostrarEscenaPrincipal();
     }
 
     private enum Operacion {
@@ -135,8 +131,6 @@ public class AsignacionAlumnosController implements Initializable {
 
     private void habilitarCampos() {
         txtId.setEditable(true);
-        cmbCurso.setEditable(true);
-        cmbAlumno.setEditable(true);
         dpkFechaAsignacion.setEditable(true);
 
         txtId.setDisable(false);
@@ -172,7 +166,7 @@ public class AsignacionAlumnosController implements Initializable {
                 alumno.setNombre3(rs.getString(4));
                 alumno.setApellido1(rs.getString(5));
                 alumno.setApellido2(rs.getString(6));
-                
+
                 /*
                 // Opción 2:
                 Alumnos alumno = new Alumnos(
@@ -183,8 +177,7 @@ public class AsignacionAlumnosController implements Initializable {
                         rs.getString("apellido1"),
                         rs.getString("apellido2")
                 );
-                */
-
+                 */
                 System.out.println(alumno.toString());
                 arrayListAlumnos.add(alumno);
             }
@@ -215,33 +208,33 @@ public class AsignacionAlumnosController implements Initializable {
     }
 
     // read -> Lista todos los registros
-    public ObservableList getAsignacionAlumnos() {
+    public ObservableList getAsignacionesAlumnos() {
         ArrayList<AsignacionesAlumnos> arrayListAsignaciones = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        
+
         try {
             pstmt = Conexion.getInstance().getConexion()
                     .prepareCall("{CALL sp_asignaciones_alumnos_read()}");
-            
+
             System.out.println(pstmt.toString());
-            
+
             rs = pstmt.executeQuery();
-            
+
             while (rs.next()) {
                 AsignacionesAlumnos asignacion = new AsignacionesAlumnos();
                 asignacion.setId(rs.getInt("id"));
                 asignacion.setAlumnoId(rs.getString("alumno_id"));
                 asignacion.setCursoId(rs.getInt("curso_id"));
                 asignacion.setFechaAsignacion(rs.getTimestamp("fecha_asignacion").toLocalDateTime());
-                
+
                 System.out.println(asignacion);
-                
+
                 arrayListAsignaciones.add(asignacion);
             }
-            
+
             listaObservableAsignaciones = FXCollections.observableArrayList(arrayListAsignaciones);
-            
+
         } catch (SQLException e) {
             System.err.println("\nSe produjo un error al intentar listar la tabla de Alumnos");
             System.err.println("Message: " + e.getMessage());
@@ -262,73 +255,239 @@ public class AsignacionAlumnosController implements Initializable {
                 e.printStackTrace();
             }
         }
-        
-        
+
         return listaObservableAsignaciones;
     }
-    
-    
-    
+
     public void cargarDatos() {
-        tblAsignacionAlumnos.setItems(getAsignacionAlumnos());
+        tblAsignacionesAlumnos.setItems(getAsignacionesAlumnos());
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colCarne.setCellValueFactory(new PropertyValueFactory<>("alumnoId"));
         colCursoId.setCellValueFactory(new PropertyValueFactory<>("cursoId"));
         colFechaAsignacion.setCellValueFactory(new PropertyValueFactory<>("fechaAsignacion"));
-        
         cmbAlumno.setItems(getAlumnos());
+        cmbCurso.setItems(getCursos());
     }
 
     private boolean existeElementoSeleccionado() {
-        return (tblAsignacionAlumnos.getSelectionModel().getSelectedItem() != null);
+        return (tblAsignacionesAlumnos.getSelectionModel().getSelectedItem() != null);
+    }
+
+    private ObservableList getCursos() {
+        ArrayList<Cursos> arrayListCursos = new ArrayList<>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_cursos_read()}");
+
+            System.out.println(pstmt.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Cursos curso = new Cursos();
+                curso.setId(rs.getInt("id"));
+                curso.setNombreCurso(rs.getString("nombre_curso"));
+                curso.setCiclo(rs.getInt("ciclo"));
+                curso.setCupoMaximo(rs.getInt("cupo_maximo"));
+                curso.setCupoMinimo(rs.getInt("cupo_minimo"));
+                curso.setCarreraTecnicaId(rs.getString("carrera_tecnica_id"));
+                curso.setHorarioId(rs.getInt("horario_id"));
+                curso.setInstructorId(rs.getInt("instructor_id"));
+                curso.setSalonId(rs.getString("salon_id"));
+
+                System.out.println(curso.toString());
+
+                arrayListCursos.add(curso);
+            }
+
+            listaObservableCursos = FXCollections.observableArrayList(arrayListCursos);
+
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar listar la tabla de Alumnos");
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listaObservableCursos;
+    }
+
+    private Cursos buscarCurso(int id) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Cursos curso = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_cursos_read_by_id(?)}");
+            pstmt.setInt(1, id);
+
+            System.out.println(pstmt.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                curso = new Cursos();
+                curso.setId(rs.getInt("id"));
+                curso.setNombreCurso(rs.getString("nombre_curso"));
+                curso.setCiclo(rs.getInt("ciclo"));
+                curso.setCupoMaximo(rs.getInt("cupo_maximo"));
+                curso.setCupoMinimo(rs.getInt("cupo_minimo"));
+                curso.setCarreraTecnicaId(rs.getString("carrera_tecnica_id"));
+                curso.setHorarioId(rs.getInt("horario_id"));
+                curso.setInstructorId(rs.getInt("instructor_id"));
+                curso.setSalonId(rs.getString("salon_id"));
+
+                System.out.println(curso.toString());
+            }
+
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar listar la tabla de Alumnos");
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return curso;
+    }
+
+    private Alumnos buscarAlumnos(String id) {
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Alumnos alumno = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_alumnos_read_by_id(?)}");
+
+            pstmt.setString(1, id);
+            System.out.println(pstmt.toString());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                alumno = new Alumnos(
+                        rs.getString("carne"),
+                        rs.getString("nombre1"),
+                        rs.getString("nombre2"),
+                        rs.getString("nombre3"),
+                        rs.getString("apellido1"),
+                        rs.getString("apellido2")
+                );
+
+                System.out.println(alumno.toString());
+            }
+
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar buscar al Alumno con el id: " + id);
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return alumno;
     }
 
     @FXML
     public void seleccionarElemento() {
         if (existeElementoSeleccionado()) {
-            /*
-            txtCarne.setText(((Alumnos) tblAsignacionAlumnos.getSelectionModel().getSelectedItem()).getCarne());
-            txtNombre1.setText(((Alumnos) tblAsignacionAlumnos.getSelectionModel().getSelectedItem()).getNombre1());
-            txtNombre2.setText(((Alumnos) tblAsignacionAlumnos.getSelectionModel().getSelectedItem()).getNombre2());
-            txtNombre3.setText(((Alumnos) tblAsignacionAlumnos.getSelectionModel().getSelectedItem()).getNombre3());
-            txtApellido1.setText(((Alumnos) tblAsignacionAlumnos.getSelectionModel().getSelectedItem()).getApellido1());
-            txtApellido2.setText(((Alumnos) tblAsignacionAlumnos.getSelectionModel().getSelectedItem()).getApellido2());
-            */
+            txtId.setText(
+                    String.valueOf(
+                            ((AsignacionesAlumnos) tblAsignacionesAlumnos
+                                    .getSelectionModel().getSelectedItem()).getId()
+                    )
+            );
+
+            cmbCurso.getSelectionModel().select(
+                    buscarCurso(
+                            ((AsignacionesAlumnos) tblAsignacionesAlumnos
+                                    .getSelectionModel().getSelectedItem()).getCursoId()
+                    )
+            );
+
+            cmbAlumno.getSelectionModel().select(
+                    buscarAlumnos(
+                            ((AsignacionesAlumnos) tblAsignacionesAlumnos
+                                    .getSelectionModel().getSelectedItem()).getAlumnoId()
+                    )
+            );
+
         }
     }
 
     private boolean agregarAsignacion() {
-        
-        /*
-        Alumnos alumno = new Alumnos();
-        alumno.setCarne(txtCarne.getText());
-        alumno.setNombre1(txtNombre1.getText());
-        alumno.setNombre2(txtNombre2.getText());
-        alumno.setNombre3(txtNombre3.getText());
-        alumno.setApellido1(txtApellido1.getText());
-        alumno.setApellido2(txtApellido2.getText());
+
+        AsignacionesAlumnos asignacion = new AsignacionesAlumnos();
+
+        asignacion.setAlumnoId(((Alumnos) cmbAlumno.getSelectionModel().getSelectedItem()).getCarne());
+
+        asignacion.setCursoId(((Cursos) cmbCurso.getSelectionModel().getSelectedItem()).getId());
+
+        asignacion.setFechaAsignacion(dpkFechaAsignacion.getValue().atStartOfDay());
 
         PreparedStatement pstmt = null;
 
         try {
             pstmt = Conexion.getInstance().getConexion()
-                    .prepareCall("{CALL sp_alumnos_create(?, ?, ?, ?, ?, ?)}");
+                    .prepareCall("{CALL sp_asignaciones_alumnos_create(?, ?, ?)}");
 
-            pstmt.setString(1, alumno.getCarne());
-            pstmt.setString(2, alumno.getNombre1());
-            pstmt.setString(3, alumno.getNombre2());
-            pstmt.setString(4, alumno.getNombre3());
-            pstmt.setString(5, alumno.getApellido1());
-            pstmt.setString(6, alumno.getApellido2());
+            pstmt.setString(1, asignacion.getAlumnoId());
+            pstmt.setInt(2, asignacion.getCursoId());
+            pstmt.setTimestamp(3, Timestamp.valueOf(asignacion.getFechaAsignacion()));
 
             System.out.println(pstmt.toString());
 
             pstmt.execute();
-            listaObservableAlumnos.add(alumno);
+
+            listaObservableAsignaciones.add(asignacion);
             return true;
         } catch (SQLException e) {
             System.err.println("\nSe produjo un error al intentar insertar "
-                    + "el siguiente registro: " + alumno.toString());
+                    + "el siguiente registro: " + asignacion.toString());
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
@@ -341,7 +500,7 @@ public class AsignacionAlumnosController implements Initializable {
                 e.printStackTrace();
             }
         }
-        */
+
         return false;
     }
 
@@ -386,61 +545,66 @@ public class AsignacionAlumnosController implements Initializable {
                     e.printStackTrace();
                 }
             }
-            */
+             */
         }
         return false;
     }
 
     private boolean eliminarAsignacion() {
-        if (existeElementoSeleccionado()) {
-            /*
-            Alumnos alumno = (Alumnos) tblAsignacionAlumnos.getSelectionModel().getSelectedItem();
-            System.out.println(alumno.toString());
-            PreparedStatement pstmt = null;
+
+        AsignacionesAlumnos asignacion = (AsignacionesAlumnos) tblAsignacionesAlumnos
+                .getSelectionModel().getSelectedItem();
+
+        System.out.println(asignacion.toString());
+
+        PreparedStatement pstmt = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_asignaciones_alumnos_delete(?)}");
+
+            pstmt.setInt(1, asignacion.getId());
+
+            System.out.println(pstmt.toString());
+
+            pstmt.execute();
+
+            listaObservableAsignaciones.remove(tblAsignacionesAlumnos
+                    .getSelectionModel().getFocusedIndex()
+            );
+
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar eliminar el siguiente registro: " + asignacion.toString());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             try {
-                pstmt = Conexion.getInstance().getConexion()
-                        .prepareCall("{CALL sp_alumnos_delete(?)}");
-                pstmt.setString(1, alumno.getCarne());
-                System.out.println(pstmt.toString());
-                pstmt.execute();
-                //listaObservableAlumnos.remove(tblAsignacionAlumnos.getSelectionModel().getFocusedIndex());
-                return true;
-            } catch (SQLException e) {
-                System.err.println("\nSe produjo un error al intentar eliminar el siguiente registro: " + alumno.toString());
-                e.printStackTrace();
+                if (pstmt != null) {
+                    pstmt.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (pstmt != null) {
-                        pstmt.close();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-            */
         }
+
         return false;
-    }    
-    
-    
-    
-    
-    
-    
+    }
+
     @FXML
     private void clicNuevo(ActionEvent event) {
         switch (operacion) {
             case NINGUNO:
                 limpiarCampos();
                 habilitarCampos();
-                tblAsignacionAlumnos.setDisable(true);
+                tblAsignacionesAlumnos.setDisable(true);
 
                 // Clave primaria para autoincrementables
                 txtId.setEditable(false);
                 txtId.setDisable(true);
-                
+
                 btnNuevo.setText("Guardar");
                 imgNuevo.setImage(new Image(PAQUETE_IMAGES + "save.png"));
 
@@ -460,7 +624,7 @@ public class AsignacionAlumnosController implements Initializable {
                     limpiarCampos();
                     deshabilitarCampos();
                     cargarDatos();
-                    tblAsignacionAlumnos.setDisable(false);
+                    tblAsignacionesAlumnos.setDisable(false);
                     btnNuevo.setText("Nuevo");
                     imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
                     btnModificar.setText("Modificar");
@@ -514,7 +678,7 @@ public class AsignacionAlumnosController implements Initializable {
 
                 limpiarCampos();
                 deshabilitarCampos();
-                tblAsignacionAlumnos.setDisable(false);
+                tblAsignacionesAlumnos.setDisable(false);
 
                 operacion = Operacion.NINGUNO;
                 break;
@@ -524,8 +688,8 @@ public class AsignacionAlumnosController implements Initializable {
                         limpiarCampos();
                         deshabilitarCampos();
                         cargarDatos();
-                        tblAsignacionAlumnos.setDisable(false);
-                        tblAsignacionAlumnos.getSelectionModel().clearSelection();
+                        tblAsignacionesAlumnos.setDisable(false);
+                        tblAsignacionesAlumnos.getSelectionModel().clearSelection();
 
                         btnNuevo.setText("Nuevo");
                         imgNuevo.setImage(new Image(PAQUETE_IMAGES + "nuevo.png"));
@@ -568,7 +732,7 @@ public class AsignacionAlumnosController implements Initializable {
                 limpiarCampos();
                 deshabilitarCampos();
 
-                tblAsignacionAlumnos.getSelectionModel().clearSelection();
+                tblAsignacionesAlumnos.getSelectionModel().clearSelection();
 
                 operacion = Operacion.NINGUNO;
                 break;
@@ -585,7 +749,7 @@ public class AsignacionAlumnosController implements Initializable {
                     Optional<ButtonType> result = alertConfirm.showAndWait();
                     if (result.get().equals(ButtonType.OK)) {
                         if (eliminarAsignacion()) {
-                            listaObservableAsignaciones.remove(tblAsignacionAlumnos.getSelectionModel().getFocusedIndex());
+                            listaObservableAsignaciones.remove(tblAsignacionesAlumnos.getSelectionModel().getFocusedIndex());
                             limpiarCampos();
                             cargarDatos();
 
@@ -597,7 +761,7 @@ public class AsignacionAlumnosController implements Initializable {
                         }
                     } else if (result.get().equals(ButtonType.CANCEL)) {
                         alertConfirm.close();
-                        tblAsignacionAlumnos.getSelectionModel().clearSelection();
+                        tblAsignacionesAlumnos.getSelectionModel().clearSelection();
                         limpiarCampos();
                     }
                 } else {

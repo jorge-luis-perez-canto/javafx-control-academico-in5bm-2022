@@ -46,11 +46,11 @@
                         </VBox>
                      </children>
                   </Pane>
-                  <VBox id="vbox-crud" layoutX="20.0" layoutY="212.0" prefHeight="338.0" prefWidth="200.0">
+                  <VBox id="vbox-crud" layoutX="20.0" layoutY="212.0" prefHeight="374.0" prefWidth="200.0">
                      <children>
-                        <HBox prefHeight="75.0" prefWidth="225.0">
+                        <HBox prefHeight="75.0" prefWidth="225.0" styleClass="hboxCrud">
                            <children>
-                              <Button fx:id="btnNuevo" mnemonicParsing="false" onAction="#clicNuevo" prefHeight="50.0" prefWidth="250.0" styleClass="botones-crud" text="Nuevo">
+                              <Button fx:id="btnNuevo" mnemonicParsing="false" onAction="#clicNuevo" prefHeight="65.0" prefWidth="170.0" styleClass="buttons" text="Nuevo">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -70,9 +70,9 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox prefHeight="75.0" prefWidth="225.0">
+                        <HBox prefHeight="75.0" prefWidth="225.0" styleClass="hboxCrud">
                            <children>
-                              <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#clicModificar" prefHeight="50.0" prefWidth="250.0" styleClass="botones-crud" text="Modificar">
+                              <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#clicModificar" prefHeight="65.0" prefWidth="250.0" styleClass="buttons" text="Modificar">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -88,10 +88,13 @@
                                  </graphic>
                               </Button>
                            </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </HBox>
-                        <HBox prefHeight="75.0" prefWidth="225.0">
+                        <HBox prefHeight="75.0" prefWidth="225.0" styleClass="hboxCrud">
                            <children>
-                              <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="50.0" prefWidth="250.0" styleClass="botones-crud" text="Eliminar">
+                              <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="65.0" prefWidth="250.0" styleClass="buttons" text="Eliminar">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -107,10 +110,13 @@
                                  </graphic>
                               </Button>
                            </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </HBox>
-                        <HBox prefHeight="75.0" prefWidth="225.0">
+                        <HBox prefHeight="75.0" prefWidth="225.0" styleClass="hboxCrud">
                            <children>
-                              <Button fx:id="btnReporte" mnemonicParsing="false" onAction="#clicReporte" prefHeight="50.0" prefWidth="250.0" styleClass="botones-crud" text="Reportes">
+                              <Button fx:id="btnReporte" mnemonicParsing="false" onAction="#clicReporte" prefHeight="65.0" prefWidth="250.0" styleClass="buttons" text="Reportes">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -126,6 +132,9 @@
                                  </graphic>
                               </Button>
                            </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                      <padding>
@@ -186,12 +195,12 @@
                            </font>
                         </Label>
                         <TextField fx:id="txtId" disable="true" editable="false" GridPane.columnIndex="1" />
-                        <ComboBox fx:id="cmbAlumno" editable="true" prefHeight="25.0" prefWidth="256.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="cmbCurso" disable="true" editable="true" prefHeight="25.0" prefWidth="257.0" GridPane.columnIndex="4" />
+                        <ComboBox fx:id="cmbAlumno" disable="true" prefHeight="25.0" prefWidth="256.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="cmbCurso" disable="true" prefHeight="25.0" prefWidth="257.0" GridPane.columnIndex="4" />
                         <DatePicker fx:id="dpkFechaAsignacion" disable="true" prefHeight="25.0" prefWidth="268.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <TableView fx:id="tblAsignacionAlumnos" layoutX="25.0" layoutY="266.0" onKeyReleased="#seleccionarElemento" onMouseClicked="#seleccionarElemento" prefHeight="346.0" prefWidth="869.0">
+                  <TableView fx:id="tblAsignacionesAlumnos" layoutX="25.0" layoutY="266.0" onKeyReleased="#seleccionarElemento" onMouseClicked="#seleccionarElemento" prefHeight="346.0" prefWidth="869.0">
                     <columns>
                       <TableColumn fx:id="colId" prefWidth="61.0" text="Id" />
                       <TableColumn fx:id="colCarne" minWidth="0.0" prefWidth="222.0" text="Carné" />

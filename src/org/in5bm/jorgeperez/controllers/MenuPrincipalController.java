@@ -31,10 +31,14 @@ public class MenuPrincipalController implements Initializable {
         escenarioPrincipal.mostrarEscenaAlumnos();
     }
     
+    @FXML
+    public void clicAsignacionAlumnos(ActionEvent event) {
+        escenarioPrincipal.mostrarEscenaAsigacion();
+    }
+    
+    @FXML
+    public void clicCursos(ActionEvent event) {
+        escenarioPrincipal.mostrarEscenaCursos();
+    }    
+    
 }
-
-
-
-
-
-

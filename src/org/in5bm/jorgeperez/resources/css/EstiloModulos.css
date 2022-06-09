@@ -13,6 +13,7 @@
 }
 
 .botones-crud {
+    -fx-background-radius: 550 250 550 250;
     -fx-background-color: #0A0B37;
     -fx-text-fill: #FFFFFF;
 }
@@ -21,13 +22,31 @@
     -fx-background-color: #E7E7E7;
     -fx-text-fill: #000000;
 }
-/*
-#vbox-crud {
-    -fx-background-color: #C8C8D2;
-    -fx-background-radius: 25 25 25 25;
-}
-*/
+
 
 #pane-header {
     -fx-background-color: #CDD0D9;
+}
+
+
+.buttons {
+    -fx-background-radius: 550 250 550 250;
+    
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #000000;
+}
+
+.buttons:hover {
+    -fx-background-radius: 550 250 550 250;
+    
+    -fx-background-color: #ED6F14;
+    
+    -fx-text-fill: #FFFFFF;    
+}
+
+.hboxCrud:hover {
+    -fx-background-radius: 550 250 550 250;
+    
+    /* -fx-background-color: #E64925; */
+    -fx-background-color: #FFFFFF;
 }

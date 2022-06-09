@@ -1,17 +1,16 @@
 package org.in5bm.jorgeperez.system;
 
 import java.io.IOException;
-import java.io.InputStream;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.in5bm.jorgeperez.controllers.AlumnosController;
 import org.in5bm.jorgeperez.controllers.AsignacionAlumnosController;
+import org.in5bm.jorgeperez.controllers.CursosController;
 import org.in5bm.jorgeperez.controllers.MenuPrincipalController;
 
 /**
@@ -32,20 +31,30 @@ public class Principal extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.escenarioPrincipal = primaryStage;
-        this.escenarioPrincipal.setTitle("Control Académico Kinal");
+        this.escenarioPrincipal.setTitle("Control Académico Kinal IN5BM");
         this.escenarioPrincipal.getIcons().add(new Image(PAQUETE_IMAGE + "colegio.png"));
         this.escenarioPrincipal.setResizable(false);
         this.escenarioPrincipal.centerOnScreen();
-        //mostrarEscenaPrincipal();
-        mostrarEscenaAsigacion();
+        mostrarEscenaPrincipal();
+        //mostrarEscenaAsigacion();
     }
+    
+    public void mostrarEscenaCursos() {
+        try {
+            CursosController cursosController = (CursosController) cambiarEscena("CursosView.fxml", 1152, 648);
+            cursosController.setEscenarioPrincipal(this);
+        } catch (Exception ex) {
+            System.err.println("\nSe ha un producido un error al mostrar la vista Cursos");
+            ex.printStackTrace();
+        }
+    } 
     
     public void mostrarEscenaAsigacion() {
         try {
             AsignacionAlumnosController asignacionController = (AsignacionAlumnosController) cambiarEscena("AsignacionesAlumnosView.fxml", 1152, 648);
             asignacionController.setEscenarioPrincipal(this);
         } catch (Exception ex) {
-            System.err.println("\nSe ha un producido un error al mostrar la vista del Menú Principal");
+            System.err.println("\nSe ha un producido un error al mostrar la vista Asignación alumnos");
             ex.printStackTrace();
         }
     }
