@@ -131,7 +131,7 @@ public class AsignacionAlumnosController implements Initializable {
     private void habilitarCampos() {
         txtId.setEditable(true);
         dpkFechaAsignacion.setEditable(true);
-
+        
         txtId.setDisable(false);
         cmbCurso.setDisable(false);
         cmbAlumno.setDisable(false);
